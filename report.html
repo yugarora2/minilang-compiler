@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MiniLang Compiler Report</title>
+<style>
+:root{--bg:#0f1117;--panel:#171a23;--border:#272b38;--text:#e6e8ef;--muted:#8b90a3;--accent:#5b8cff;--ok:#3ddc84;--err:#ff5d6c;--warn:#ffb84d;}*{box-sizing:border-box;}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;padding:32px;}h1{font-size:22px;margin:0 0 4px;}.sub{color:var(--muted);font-size:13px;margin-bottom:24px;}.banner{display:inline-block;padding:8px 16px;border-radius:8px;font-weight:600;font-size:14px;margin-bottom:24px;}.banner.ok{background:rgba(61,220,132,0.15);color:var(--ok);border:1px solid var(--ok);}.banner.err{background:rgba(255,93,108,0.15);color:var(--err);border:1px solid var(--err);}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}.panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:20px;}.panel h2{font-size:14px;margin:0 0 12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;}pre{margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;overflow-x:auto;max-height:520px;overflow-y:auto;white-space:pre;}.lineno{color:var(--muted);display:inline-block;width:32px;text-align:right;margin-right:12px;user-select:none;}table{width:100%;border-collapse:collapse;font-size:13px;}th{text-align:left;color:var(--muted);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--panel);}td{padding:5px 8px;border-bottom:1px solid rgba(255,255,255,0.04);font-family:'SF Mono',Consolas,Monaco,monospace;}.scroll{max-height:420px;overflow-y:auto;}.tag{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;}.tag.kw{background:rgba(91,140,255,0.15);color:var(--accent);}.tag.id{background:rgba(255,184,77,0.15);color:var(--warn);}.tag.lit{background:rgba(61,220,132,0.15);color:var(--ok);}.tag.op,.tag.punct,.tag.assign,.tag.relop{background:rgba(255,255,255,0.08);color:var(--text);}.err-row td{color:var(--err);}.empty{color:var(--muted);font-style:italic;padding:8px;}.full{grid-column:1/-1;}footer{color:var(--muted);font-size:12px;margin-top:8px;}.ast-tag{font-weight:600; cursor:pointer; color:var(--accent);}.ast-leaf{color:var(--ok);}.ast-none{color:var(--muted);font-style:italic;}.tac-op{color:var(--warn);font-weight:bold;}details{margin-left:8px;}ul{margin:4px 0 8px 16px;padding:0;list-style-type:none;border-left:1px dashed rgba(255,255,255,0.1);}li{margin-bottom:4px;padding-left:8px;}</style>
+</head>
+<body>
+<h1>MiniLang Compiler Report</h1>
+<div class="sub">Source: test_valid.ml &middot; Phase 2: Core Implementation (Lexical &rarr; Syntax &rarr; AST &rarr; TAC)</div>
+<div class="banner ok">&#10003; Compilation finished with 0 errors</div>
+<div class="grid">
+<div class="panel"><h2>Source Code</h2><pre><span class="lineno">1</span>// Sample MiniLang program: computes a simple sum and checks a condition
+<span class="lineno">2</span>int x = 5;
+<span class="lineno">3</span>int y = 10;
+<span class="lineno">4</span>int sum = 0;
+<span class="lineno">5</span>float ratio = 0.5;
+<span class="lineno">6</span>string label = &quot;result&quot;;
+<span class="lineno">7</span>
+<span class="lineno">8</span>sum = x + y;
+<span class="lineno">9</span>
+<span class="lineno">10</span>if (sum &gt; 10) {
+<span class="lineno">11</span>    print(sum);
+<span class="lineno">12</span>} else {
+<span class="lineno">13</span>    print(x);
+<span class="lineno">14</span>}
+<span class="lineno">15</span>
+<span class="lineno">16</span>while (x &lt; y) {
+<span class="lineno">17</span>    x = x + 1;
+<span class="lineno">18</span>}
+<span class="lineno">19</span>
+<span class="lineno">20</span>print(ratio);
+<span class="lineno">21</span>print(label);
+</pre></div>
+<div class="panel"><h2>Symbol Table</h2><div class="scroll"><table><tr><th>Identifier</th><th>Data Type</th><th>Scope</th><th>Address</th><th>Declared@Ln</th><th>Initialized</th></tr>
+<tr><td>x</td><td>int</td><td>global</td><td>1000</td><td>2</td><td>yes</td></tr>
+<tr><td>y</td><td>int</td><td>global</td><td>1004</td><td>3</td><td>yes</td></tr>
+<tr><td>sum</td><td>int</td><td>global</td><td>1008</td><td>4</td><td>yes</td></tr>
+<tr><td>ratio</td><td>float</td><td>global</td><td>1012</td><td>5</td><td>yes</td></tr>
+<tr><td>label</td><td>string</td><td>global</td><td>1016</td><td>6</td><td>yes</td></tr>
+</table></div></div>
+<div class="panel"><h2>Abstract Syntax Tree</h2><div class="scroll">
+<details open><summary class="ast-tag ast-program">Program</summary><ul><li><details open><summary class="ast-tag ast-decl">Decl <b>x</b> : int (ln 2)</summary><ul><li><span class="ast-leaf ast-lit">IntLit 5</span></li></ul></details></li><li><details open><summary class="ast-tag ast-decl">Decl <b>y</b> : int (ln 3)</summary><ul><li><span class="ast-leaf ast-lit">IntLit 10</span></li></ul></details></li><li><details open><summary class="ast-tag ast-decl">Decl <b>sum</b> : int (ln 4)</summary><ul><li><span class="ast-leaf ast-lit">IntLit 0</span></li></ul></details></li><li><details open><summary class="ast-tag ast-decl">Decl <b>ratio</b> : float (ln 5)</summary><ul><li><span class="ast-leaf ast-lit">FloatLit 0.5</span></li></ul></details></li><li><details open><summary class="ast-tag ast-decl">Decl <b>label</b> : string (ln 6)</summary><ul><li><span class="ast-leaf ast-lit">StringLit &quot;result&quot;</span></li></ul></details></li><li><details open><summary class="ast-tag ast-assign">Assign <b>sum</b> = (ln 8)</summary><ul><li><details open><summary class="ast-tag ast-binop">BinOp '+' : int</summary><ul><li><span class="ast-leaf ast-id">Id <b>x</b> : int</span></li><li><span class="ast-leaf ast-id">Id <b>y</b> : int</span></li></ul></details></li></ul></details></li><li><details open><summary class="ast-tag ast-if">If (ln 14)</summary><ul><li><i>cond</i>: <details open><summary class="ast-tag ast-binop">BinOp '>' : int</summary><ul><li><span class="ast-leaf ast-id">Id <b>sum</b> : int</span></li><li><span class="ast-leaf ast-lit">IntLit 10</span></li></ul></details></li><li><i>then</i>: <details open><summary class="ast-tag ast-block">Block</summary><ul><li><details open><summary class="ast-tag ast-print">Print (ln 11)</summary><ul><li><span class="ast-leaf ast-id">Id <b>sum</b> : int</span></li></ul></details></li></ul></details></li><li><i>else</i>: <details open><summary class="ast-tag ast-block">Block</summary><ul><li><details open><summary class="ast-tag ast-print">Print (ln 13)</summary><ul><li><span class="ast-leaf ast-id">Id <b>x</b> : int</span></li></ul></details></li></ul></details></li></ul></details></li><li><details open><summary class="ast-tag ast-while">While (ln 18)</summary><ul><li><i>cond</i>: <details open><summary class="ast-tag ast-binop">BinOp '<' : int</summary><ul><li><span class="ast-leaf ast-id">Id <b>x</b> : int</span></li><li><span class="ast-leaf ast-id">Id <b>y</b> : int</span></li></ul></details></li><li><i>body</i>: <details open><summary class="ast-tag ast-block">Block</summary><ul><li><details open><summary class="ast-tag ast-assign">Assign <b>x</b> = (ln 17)</summary><ul><li><details open><summary class="ast-tag ast-binop">BinOp '+' : int</summary><ul><li><span class="ast-leaf ast-id">Id <b>x</b> : int</span></li><li><span class="ast-leaf ast-lit">IntLit 1</span></li></ul></details></li></ul></details></li></ul></details></li></ul></details></li><li><details open><summary class="ast-tag ast-print">Print (ln 20)</summary><ul><li><span class="ast-leaf ast-id">Id <b>ratio</b> : float</span></li></ul></details></li><li><details open><summary class="ast-tag ast-print">Print (ln 21)</summary><ul><li><span class="ast-leaf ast-id">Id <b>label</b> : string</span></li></ul></details></li></ul></details></div></div>
+<div class="panel"><h2>Intermediate Representation (TAC)</h2><div class="scroll"><table><tr><th>Index</th><th>Op</th><th>Arg1</th><th>Arg2</th><th>Result</th></tr>
+<tr><td>0</td><td><span class="tac-op">=</span></td><td>5</td><td></td><td>x</td></tr>
+<tr><td>1</td><td><span class="tac-op">=</span></td><td>10</td><td></td><td>y</td></tr>
+<tr><td>2</td><td><span class="tac-op">=</span></td><td>0</td><td></td><td>sum</td></tr>
+<tr><td>3</td><td><span class="tac-op">=</span></td><td>0.5</td><td></td><td>ratio</td></tr>
+<tr><td>4</td><td><span class="tac-op">=</span></td><td>&quot;result&quot;</td><td></td><td>label</td></tr>
+<tr><td>5</td><td><span class="tac-op">+</span></td><td>x</td><td>y</td><td>t1</td></tr>
+<tr><td>6</td><td><span class="tac-op">=</span></td><td>t1</td><td></td><td>sum</td></tr>
+<tr><td>7</td><td><span class="tac-op">&gt;</span></td><td>sum</td><td>10</td><td>t2</td></tr>
+<tr><td>8</td><td><span class="tac-op">ifFalse</span></td><td>t2</td><td></td><td>L1</td></tr>
+<tr><td>9</td><td><span class="tac-op">print</span></td><td>sum</td><td></td><td></td></tr>
+<tr><td>10</td><td><span class="tac-op">goto</span></td><td></td><td></td><td>L2</td></tr>
+<tr><td>11</td><td><span class="tac-op">label</span></td><td></td><td></td><td>L1</td></tr>
+<tr><td>12</td><td><span class="tac-op">print</span></td><td>x</td><td></td><td></td></tr>
+<tr><td>13</td><td><span class="tac-op">label</span></td><td></td><td></td><td>L2</td></tr>
+<tr><td>14</td><td><span class="tac-op">label</span></td><td></td><td></td><td>L3</td></tr>
+<tr><td>15</td><td><span class="tac-op">&lt;</span></td><td>x</td><td>y</td><td>t3</td></tr>
+<tr><td>16</td><td><span class="tac-op">ifFalse</span></td><td>t3</td><td></td><td>L4</td></tr>
+<tr><td>17</td><td><span class="tac-op">+</span></td><td>x</td><td>1</td><td>t4</td></tr>
+<tr><td>18</td><td><span class="tac-op">=</span></td><td>t4</td><td></td><td>x</td></tr>
+<tr><td>19</td><td><span class="tac-op">goto</span></td><td></td><td></td><td>L3</td></tr>
+<tr><td>20</td><td><span class="tac-op">label</span></td><td></td><td></td><td>L4</td></tr>
+<tr><td>21</td><td><span class="tac-op">print</span></td><td>ratio</td><td></td><td></td></tr>
+<tr><td>22</td><td><span class="tac-op">print</span></td><td>label</td><td></td><td></td></tr>
+</table></div></div>
+<div class="panel"><h2>Token Stream</h2><div class="scroll"><table><tr><th>Line</th><th>Type</th><th>Lexeme</th></tr>
+<tr><td>2</td><td><span class="tag kw">KEYWORD</span></td><td>int</td></tr>
+<tr><td>2</td><td><span class="tag id">ID</span></td><td>x</td></tr>
+<tr><td>2</td><td><span class="tag assign">ASSIGN</span></td><td>=</td></tr>
+<tr><td>2</td><td><span class="tag lit">INT_LIT</span></td><td>5</td></tr>
+<tr><td>2</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+<tr><td>3</td><td><span class="tag kw">KEYWORD</span></td><td>int</td></tr>
+<tr><td>3</td><td><span class="tag id">ID</span></td><td>y</td></tr>
+<tr><td>3</td><td><span class="tag assign">ASSIGN</span></td><td>=</td></tr>
+<tr><td>3</td><td><span class="tag lit">INT_LIT</span></td><td>10</td></tr>
+<tr><td>3</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+<tr><td>4</td><td><span class="tag kw">KEYWORD</span></td><td>int</td></tr>
+<tr><td>4</td><td><span class="tag id">ID</span></td><td>sum</td></tr>
+<tr><td>4</td><td><span class="tag assign">ASSIGN</span></td><td>=</td></tr>
+<tr><td>4</td><td><span class="tag lit">INT_LIT</span></td><td>0</td></tr>
+<tr><td>4</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+<tr><td>5</td><td><span class="tag kw">KEYWORD</span></td><td>float</td></tr>
+<tr><td>5</td><td><span class="tag id">ID</span></td><td>ratio</td></tr>
+<tr><td>5</td><td><span class="tag assign">ASSIGN</span></td><td>=</td></tr>
+<tr><td>5</td><td><span class="tag lit">FLOAT_LIT</span></td><td>0.5</td></tr>
+<tr><td>5</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+<tr><td>6</td><td><span class="tag kw">KEYWORD</span></td><td>string</td></tr>
+<tr><td>6</td><td><span class="tag id">ID</span></td><td>label</td></tr>
+<tr><td>6</td><td><span class="tag assign">ASSIGN</span></td><td>=</td></tr>
+<tr><td>6</td><td><span class="tag lit">STRING_LIT</span></td><td>&quot;result&quot;</td></tr>
+<tr><td>6</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+<tr><td>8</td><td><span class="tag id">ID</span></td><td>sum</td></tr>
+<tr><td>8</td><td><span class="tag assign">ASSIGN</span></td><td>=</td></tr>
+<tr><td>8</td><td><span class="tag id">ID</span></td><td>x</td></tr>
+<tr><td>8</td><td><span class="tag op">OP</span></td><td>+</td></tr>
+<tr><td>8</td><td><span class="tag id">ID</span></td><td>y</td></tr>
+<tr><td>8</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+<tr><td>10</td><td><span class="tag kw">KEYWORD</span></td><td>if</td></tr>
+<tr><td>10</td><td><span class="tag punct">PUNCT</span></td><td>(</td></tr>
+<tr><td>10</td><td><span class="tag id">ID</span></td><td>sum</td></tr>
+<tr><td>10</td><td><span class="tag relop">RELOP</span></td><td>&gt;</td></tr>
+<tr><td>10</td><td><span class="tag lit">INT_LIT</span></td><td>10</td></tr>
+<tr><td>10</td><td><span class="tag punct">PUNCT</span></td><td>)</td></tr>
+<tr><td>10</td><td><span class="tag punct">PUNCT</span></td><td>{</td></tr>
+<tr><td>11</td><td><span class="tag kw">KEYWORD</span></td><td>print</td></tr>
+<tr><td>11</td><td><span class="tag punct">PUNCT</span></td><td>(</td></tr>
+<tr><td>11</td><td><span class="tag id">ID</span></td><td>sum</td></tr>
+<tr><td>11</td><td><span class="tag punct">PUNCT</span></td><td>)</td></tr>
+<tr><td>11</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+<tr><td>12</td><td><span class="tag punct">PUNCT</span></td><td>}</td></tr>
+<tr><td>12</td><td><span class="tag kw">KEYWORD</span></td><td>else</td></tr>
+<tr><td>12</td><td><span class="tag punct">PUNCT</span></td><td>{</td></tr>
+<tr><td>13</td><td><span class="tag kw">KEYWORD</span></td><td>print</td></tr>
+<tr><td>13</td><td><span class="tag punct">PUNCT</span></td><td>(</td></tr>
+<tr><td>13</td><td><span class="tag id">ID</span></td><td>x</td></tr>
+<tr><td>13</td><td><span class="tag punct">PUNCT</span></td><td>)</td></tr>
+<tr><td>13</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+<tr><td>14</td><td><span class="tag punct">PUNCT</span></td><td>}</td></tr>
+<tr><td>16</td><td><span class="tag kw">KEYWORD</span></td><td>while</td></tr>
+<tr><td>16</td><td><span class="tag punct">PUNCT</span></td><td>(</td></tr>
+<tr><td>16</td><td><span class="tag id">ID</span></td><td>x</td></tr>
+<tr><td>16</td><td><span class="tag relop">RELOP</span></td><td>&lt;</td></tr>
+<tr><td>16</td><td><span class="tag id">ID</span></td><td>y</td></tr>
+<tr><td>16</td><td><span class="tag punct">PUNCT</span></td><td>)</td></tr>
+<tr><td>16</td><td><span class="tag punct">PUNCT</span></td><td>{</td></tr>
+<tr><td>17</td><td><span class="tag id">ID</span></td><td>x</td></tr>
+<tr><td>17</td><td><span class="tag assign">ASSIGN</span></td><td>=</td></tr>
+<tr><td>17</td><td><span class="tag id">ID</span></td><td>x</td></tr>
+<tr><td>17</td><td><span class="tag op">OP</span></td><td>+</td></tr>
+<tr><td>17</td><td><span class="tag lit">INT_LIT</span></td><td>1</td></tr>
+<tr><td>17</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+<tr><td>18</td><td><span class="tag punct">PUNCT</span></td><td>}</td></tr>
+<tr><td>20</td><td><span class="tag kw">KEYWORD</span></td><td>print</td></tr>
+<tr><td>20</td><td><span class="tag punct">PUNCT</span></td><td>(</td></tr>
+<tr><td>20</td><td><span class="tag id">ID</span></td><td>ratio</td></tr>
+<tr><td>20</td><td><span class="tag punct">PUNCT</span></td><td>)</td></tr>
+<tr><td>20</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+<tr><td>21</td><td><span class="tag kw">KEYWORD</span></td><td>print</td></tr>
+<tr><td>21</td><td><span class="tag punct">PUNCT</span></td><td>(</td></tr>
+<tr><td>21</td><td><span class="tag id">ID</span></td><td>label</td></tr>
+<tr><td>21</td><td><span class="tag punct">PUNCT</span></td><td>)</td></tr>
+<tr><td>21</td><td><span class="tag punct">PUNCT</span></td><td>;</td></tr>
+</table></div></div>
+<div class="panel full"><h2>Errors</h2><div class="scroll"><table><tr><th>Line</th><th>Category</th><th>Message</th></tr>
+<tr><td colspan="3" class="empty">No errors &mdash; compilation successful</td></tr>
+</table></div></div>
+</div>
+<footer>Generated by the MiniLang compiler &mdash; Phase 2 (Lexical, Syntax, AST, TAC)</footer>
+</body>
+</html>

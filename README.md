@@ -91,8 +91,4 @@ terminal tab, or run `make` from a plain Terminal.app window instead.
 | `test_errors.ml` | Demonstrates redeclaration / undeclared-variable detection |
 | `test_type_errors.ml` | Demonstrates type-checking errors |
 
-## What's next (Phase 2 / Phase 3 — not built yet)
-- AST construction + visual rendering
-- Intermediate code generation (three-address code)
-- Optimization passes: common subexpression elimination, dead code elimination
-- Target assembly generation
+

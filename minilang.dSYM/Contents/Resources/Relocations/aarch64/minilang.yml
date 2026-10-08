@@ -88,8 +88,8 @@ relocations:
   - { offset: 0x1A3F, size: 0x8, addend: 0x0, symName: _yy_init_globals, symObjAddr: 0x2724, symBinAddr: 0x100006188, symSize: 0x54 }
   - { offset: 0x1A59, size: 0x8, addend: 0x0, symName: _yyrealloc, symObjAddr: 0x2778, symBinAddr: 0x1000061DC, symSize: 0x2C }
   - { offset: 0x1AC4, size: 0x8, addend: 0x0, symName: _type_to_string, symObjAddr: 0x0, symBinAddr: 0x100006208, symSize: 0x94 }
-  - { offset: 0x1AEB, size: 0x8, addend: 0x0, symName: _table, symObjAddr: 0x1574, symBinAddr: 0x1000100A4, symSize: 0x0 }
-  - { offset: 0x1BB6, size: 0x8, addend: 0x0, symName: _count, symObjAddr: 0x1570, symBinAddr: 0x1000100A0, symSize: 0x0 }
+  - { offset: 0x1AEB, size: 0x8, addend: 0x0, symName: _table, symObjAddr: 0x156C, symBinAddr: 0x1000100A4, symSize: 0x0 }
+  - { offset: 0x1BB6, size: 0x8, addend: 0x0, symName: _count, symObjAddr: 0x1568, symBinAddr: 0x1000100A0, symSize: 0x0 }
   - { offset: 0x1BCB, size: 0x8, addend: 0x0, symName: _next_address, symObjAddr: 0x7AC, symBinAddr: 0x100010004, symSize: 0x0 }
   - { offset: 0x1BD4, size: 0x8, addend: 0x0, symName: _type_to_string, symObjAddr: 0x0, symBinAddr: 0x100006208, symSize: 0x94 }
   - { offset: 0x1BFC, size: 0x8, addend: 0x0, symName: _size_of_type, symObjAddr: 0x94, symBinAddr: 0x10000629C, symSize: 0x84 }

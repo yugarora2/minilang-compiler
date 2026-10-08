@@ -16,6 +16,8 @@ ASTNode *ast_new_block(void) {
     n->item_cap = 8;
     n->items = malloc(sizeof(ASTNode *) * n->item_cap);
     n->item_count = 0;
+    
+    printf("@VIZ:NODE|%p|Block|%d\n", (void*)n, n->line); fflush(stdout);
     return n;
 }
 
@@ -25,6 +27,10 @@ void ast_block_add(ASTNode *block, ASTNode *stmt) {
         block->items = realloc(block->items, sizeof(ASTNode *) * block->item_cap);
     }
     block->items[block->item_count++] = stmt;
+    
+    if (stmt) {
+        printf("@VIZ:EDGE|%p|%p|stmt\n", (void*)block, (void*)stmt); fflush(stdout);
+    }
 }
 
 ASTNode *ast_new_decl(int line, DataType type, const char *name, ASTNode *init) {
@@ -32,6 +38,10 @@ ASTNode *ast_new_decl(int line, DataType type, const char *name, ASTNode *init) 
     n->type = type;
     n->sval = strdup(name);
     n->a = init;
+    
+    printf("@VIZ:NODE|%p|Decl: %s|%d\n", (void*)n, name, n->line);
+    if (init) printf("@VIZ:EDGE|%p|%p|init\n", (void*)n, (void*)init);
+    fflush(stdout);
     return n;
 }
 
@@ -39,6 +49,10 @@ ASTNode *ast_new_assign(int line, const char *name, ASTNode *expr) {
     ASTNode *n = ast_new(AST_ASSIGN, line);
     n->sval = strdup(name);
     n->a = expr;
+    
+    printf("@VIZ:NODE|%p|Assign: %s|%d\n", (void*)n, name, n->line);
+    if (expr) printf("@VIZ:EDGE|%p|%p|expr\n", (void*)n, (void*)expr);
+    fflush(stdout);
     return n;
 }
 
@@ -47,6 +61,12 @@ ASTNode *ast_new_if(int line, ASTNode *cond, ASTNode *then_blk, ASTNode *else_bl
     n->a = cond;
     n->b = then_blk;
     n->c = else_blk;
+    
+    printf("@VIZ:NODE|%p|If|%d\n", (void*)n, n->line);
+    if (cond) printf("@VIZ:EDGE|%p|%p|cond\n", (void*)n, (void*)cond);
+    if (then_blk) printf("@VIZ:EDGE|%p|%p|then\n", (void*)n, (void*)then_blk);
+    if (else_blk) printf("@VIZ:EDGE|%p|%p|else\n", (void*)n, (void*)else_blk);
+    fflush(stdout);
     return n;
 }
 
@@ -54,12 +74,21 @@ ASTNode *ast_new_while(int line, ASTNode *cond, ASTNode *body) {
     ASTNode *n = ast_new(AST_WHILE, line);
     n->a = cond;
     n->b = body;
+    
+    printf("@VIZ:NODE|%p|While|%d\n", (void*)n, n->line);
+    if (cond) printf("@VIZ:EDGE|%p|%p|cond\n", (void*)n, (void*)cond);
+    if (body) printf("@VIZ:EDGE|%p|%p|body\n", (void*)n, (void*)body);
+    fflush(stdout);
     return n;
 }
 
 ASTNode *ast_new_print(int line, ASTNode *expr) {
     ASTNode *n = ast_new(AST_PRINT, line);
     n->a = expr;
+    
+    printf("@VIZ:NODE|%p|Print|%d\n", (void*)n, n->line);
+    if (expr) printf("@VIZ:EDGE|%p|%p|expr\n", (void*)n, (void*)expr);
+    fflush(stdout);
     return n;
 }
 
@@ -69,6 +98,11 @@ ASTNode *ast_new_binop(int line, const char *op, DataType type, ASTNode *left, A
     n->type = type;
     n->a = left;
     n->b = right;
+    
+    printf("@VIZ:NODE|%p|BinOp: %s|%d\n", (void*)n, op, n->line);
+    if (left) printf("@VIZ:EDGE|%p|%p|left\n", (void*)n, (void*)left);
+    if (right) printf("@VIZ:EDGE|%p|%p|right\n", (void*)n, (void*)right);
+    fflush(stdout);
     return n;
 }
 
@@ -77,6 +111,10 @@ ASTNode *ast_new_unary(int line, const char *op, DataType type, ASTNode *operand
     n->sval = strdup(op);
     n->type = type;
     n->a = operand;
+    
+    printf("@VIZ:NODE|%p|Unary: %s|%d\n", (void*)n, op, n->line);
+    if (operand) printf("@VIZ:EDGE|%p|%p|operand\n", (void*)n, (void*)operand);
+    fflush(stdout);
     return n;
 }
 
@@ -84,6 +122,8 @@ ASTNode *ast_new_int_lit(int line, int value) {
     ASTNode *n = ast_new(AST_INT_LIT, line);
     n->type = TYPE_INT;
     n->ival = value;
+    
+    printf("@VIZ:NODE|%p|Int: %d|%d\n", (void*)n, value, n->line); fflush(stdout);
     return n;
 }
 
@@ -91,6 +131,8 @@ ASTNode *ast_new_float_lit(int line, double value) {
     ASTNode *n = ast_new(AST_FLOAT_LIT, line);
     n->type = TYPE_FLOAT;
     n->fval = value;
+    
+    printf("@VIZ:NODE|%p|Float: %g|%d\n", (void*)n, value, n->line); fflush(stdout);
     return n;
 }
 
@@ -98,6 +140,8 @@ ASTNode *ast_new_string_lit(int line, const char *raw_with_quotes) {
     ASTNode *n = ast_new(AST_STRING_LIT, line);
     n->type = TYPE_STRING;
     n->sval = strdup(raw_with_quotes);
+    
+    printf("@VIZ:NODE|%p|String|%d\n", (void*)n, n->line); fflush(stdout);
     return n;
 }
 
@@ -105,6 +149,8 @@ ASTNode *ast_new_id(int line, DataType type, const char *name) {
     ASTNode *n = ast_new(AST_ID, line);
     n->type = type;
     n->sval = strdup(name);
+    
+    printf("@VIZ:NODE|%p|Id: %s|%d\n", (void*)n, name, n->line); fflush(stdout);
     return n;
 }
 
@@ -249,6 +295,7 @@ void ast_write_html(FILE *fp, ASTNode *root) {
     write_block_children(fp, root);
     fputs("</details>", fp);
 }
+
 /* ---- Graphviz DOT Export (Bubble Tree) ---- */
 
 static void write_dot_node(FILE *fp, ASTNode *node) {
@@ -267,7 +314,8 @@ static void write_dot_node(FILE *fp, ASTNode *node) {
         case AST_UNARY: fprintf(fp, "Unary\\n'%s'", node->sval); break;
         case AST_INT_LIT: fprintf(fp, "IntLit\\n%d", node->ival); break;
         case AST_FLOAT_LIT: fprintf(fp, "FloatLit\\n%g", node->fval); break;
-case AST_STRING_LIT: fprintf(fp, "StringLit\\n(string)"); break;        case AST_ID: fprintf(fp, "Id\\n%s", node->sval); break;
+        case AST_STRING_LIT: fprintf(fp, "StringLit\\n(string)"); break;        
+        case AST_ID: fprintf(fp, "Id\\n%s", node->sval); break;
     }
     fprintf(fp, "\", shape=ellipse, style=filled, fillcolor=\"#171a23\", fontcolor=\"#e6e8ef\", color=\"#5b8cff\"];\n");
 

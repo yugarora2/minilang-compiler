@@ -17,6 +17,10 @@ static void emit(const char *op, const char *a1, const char *a2, const char *res
     snprintf(q->arg1, sizeof q->arg1, "%s", a1 ? a1 : "");
     snprintf(q->arg2, sizeof q->arg2, "%s", a2 ? a2 : "");
     snprintf(q->result, sizeof q->result, "%s", result ? result : "");
+    
+    // --- VIZ HOOK ---
+    printf("@VIZ:TAC|%d|%s|%s|%s|%s\n", quad_count - 1, q->op, q->arg1, q->arg2, q->result);
+    fflush(stdout);
 }
 
 static char *new_temp(void) {
